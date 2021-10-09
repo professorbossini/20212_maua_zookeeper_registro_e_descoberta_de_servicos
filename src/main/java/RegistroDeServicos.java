@@ -1,6 +1,7 @@
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class RegistroDeServicos {
     public void atualizarEnderecos () throws InterruptedException, KeeperException{
         synchronized (this){
             List <String> znodes = zooKeeper.getChildren(REGISTRO_ZNODE, registroDeServicosWatcher);
+            List <String> enderecos = new ArrayList<>();
             for (String znode: znodes){
                 Stat stat = null;
                 if((stat = zooKeeper.exists(
@@ -59,7 +61,7 @@ public class RegistroDeServicos {
                     )));
                 }
             }
-            this.enderecos = Collections.unmodifiableList(this.enderecos);
+            this.enderecos = Collections.unmodifiableList(enderecos);
             System.out.printf ("Endereços atualmente disponíveis: %s\n", this.enderecos.toString());
         }
     }
